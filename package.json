@@ -1,25 +1,33 @@
 {
-  "name": "donut-shop",
+  "name": "heroku-nextjs",
   "version": "1.0.0",
+  "description": "Deploy Next.js server-side React apps to Heroku",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT"
   },
-  "dependencies": {
-    "@emotion/core": "^10.0.27",
-    "@emotion/styled": "^10.0.27",
-    "@stripe/react-stripe-js": "^1.1.2",
-    "@stripe/stripe-js": "^1.5.0",
-    "axios": "^0.19.2",
-    "next": "latest",
-    "react": "^16.7.0",
-    "react-confetti": "^5.0.1",
-    "react-dom": "^16.7.0",
-    "stripe": "^8.15.0"
+  "engines": {
+    "node": "10"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mars/heroku-nextjs.git"
+  },
+  "keywords": [
+    "react",
+    "ssr",
+    "server-side-rendering"
+  ],
+  "author": "Mars Hall",
   "license": "MIT",
-  "devDependencies": {
-    "dotenv": "^8.2.0"
+  "bugs": {
+    "url": "https://github.com/mars/heroku-nextjs/issues"
+  },
+  "homepage": "https://github.com/mars/heroku-nextjs#readme",
+  "dependencies": {
+    "next": "^9.0.6",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   }
 }
