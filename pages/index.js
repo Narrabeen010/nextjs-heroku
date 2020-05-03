@@ -24,7 +24,7 @@ const CheckoutForm = ({ success }) => {
       const { id } = paymentMethod;
 
       try {
-        const { data } = await axios.post("/api/charge", { id, amount: 1099 });
+        const { data } = await axios.post("/api/charge", { id, amount: 2000 });
         console.log(data);
         success();
       } catch (error) {
@@ -38,7 +38,7 @@ const CheckoutForm = ({ success }) => {
       onSubmit={handleSubmit}
       style={{ maxWidth: "400px", margin: "0 auto" }}
     >
-      <h2>Price: $10.99 USD</h2>
+      <h2>Hunch: $20</h2>
       <img
         src="https://images.ricardocuisine.com/services/recipes/500x675_7700.jpg"
         style={{ maxWidth: "50px" }}
@@ -53,7 +53,7 @@ const CheckoutForm = ({ success }) => {
 
 // you should use env variables here to not commit this
 // but it is a public key anyway, so not as sensitive
-const stripePromise = loadStripe("pk_test_R9Sv3xfSpXa6eW37hSUO2lze");
+const stripePromise = loadStripe(process.env.PUBLISHABLE_KEY);
 
 const Index = () => {
   const [status, setStatus] = React.useState("ready");

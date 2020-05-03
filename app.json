@@ -1,18 +1,17 @@
 {
   "name": "Next.js",
   "description": "Universal web app built on React.js, server-rendered with Node.js",
-  "scripts": {
-  },
+  "scripts": {},
   "env": {
+    "PUBLISHABLE_KEY": "@publishable-key",
+    "SECRET_KEY": "@secret-key"
   },
   "formation": {
     "web": {
       "quantity": 1
     }
   },
-  "addons": [
-
-  ],
+  "addons": [],
   "buildpacks": [
     {
       "url": "heroku/nodejs"

@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 // don't commit your real stripe secret key... use env variables!!
 // https://www.leighhalliday.com/secrets-env-vars-nextjs-now
-const stripe = new Stripe("sk_test_ZFPuvtaPGandTE3AI6fSn9VY");
+const stripe = new Stripe(process.env.SECRET_KEY);
 
 export default async (req, res) => {
   const { id, amount } = req.body;
@@ -9,7 +9,7 @@ export default async (req, res) => {
   try {
     const payment = await stripe.paymentIntents.create({
       amount,
-      currency: "USD",
+      currency: "AUD",
       description: "Delicious empanadas",
       payment_method: id,
       confirm: true,
