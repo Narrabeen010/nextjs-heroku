@@ -1,35 +1,76 @@
-import React from 'react'
-import Head from 'next/head'
-import Logo from '../components/logo'
+import React from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import axios from "axios";
 
-export default () => (
-  <div className="root">
-    <Head>
-      <meta charSet="utf-8"/>
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
-      <meta name="viewport" content="width=device-width, initial-scale=1"/>
-      <title>Next.js on Heroku</title>
-    </Head>
-    <style jsx>{`
-      .root {
-        font-family: sans-serif;
-        line-height: 1.33rem;
-        margin-top: 8vh,
+const CheckoutForm = ({ success }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement),
+    });
+
+    if (!error) {
+      const { id } = paymentMethod;
+
+      try {
+        const { data } = await axios.post("/api/charge", { id, amount: 1099 });
+        console.log(data);
+        success();
+      } catch (error) {
+        console.log(error);
       }
-      @media (min-width: 600px) {
-        .root {
-          margin-left: 21vw;
-          margin-right: 21vw;
-        }
-      }
-    `}</style>
+    }
+  };
 
-    <h1><Logo style={{ height: '1.45rem' }}/> Next.js on Heroku</h1>
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{ maxWidth: "400px", margin: "0 auto" }}
+    >
+      <h2>Price: $10.99 USD</h2>
+      <img
+        src="https://images.ricardocuisine.com/services/recipes/500x675_7700.jpg"
+        style={{ maxWidth: "50px" }}
+      />
+      <CardElement />
+      <button type="submit" disabled={!stripe}>
+        Pay
+      </button>
+    </form>
+  );
+};
 
-    <p>Deploy <a href="https://nextjs.org/">Next.js</a> universal web apps on <a href="https://www.heroku.com/home">Heroku</a>.</p>
+// you should use env variables here to not commit this
+// but it is a public key anyway, so not as sensitive
+const stripePromise = loadStripe("pk_test_R9Sv3xfSpXa6eW37hSUO2lze");
 
-    <p>This <strong>demo deployment on Heroku</strong> is from the repo <a href="https://github.com/mars/heroku-nextjs">mars/heroku-nextjs</a>.</p>
+const Index = () => {
+  const [status, setStatus] = React.useState("ready");
 
-    <p><a href="https://github.com/mars/heroku-nextjs/archive/master.zip">Download this Next.js app</a> as a Heroku-ready template, or follow <a href="https://github.com/mars/heroku-nextjs#production-deployment">Production Deployment</a> to push an existing app to Heroku.</p>
-  </div>
-)
+  if (status === "success") {
+    return <div>Congrats on your empanadas!</div>;
+  }
+
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm
+        success={() => {
+          setStatus("success");
+        }}
+      />
+    </Elements>
+  );
+};
+
+export default Index;
